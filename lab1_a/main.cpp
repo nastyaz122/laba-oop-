@@ -13,11 +13,8 @@ enum class Type {
 	Art, Tech
 };
 
-void Print();
-
 class Book
 {
-	friend void Print();
 public:
 	Book(const std::string& avtor, const std::string& title, Type bookType) :
 		_avtor(avtor), _title(title), _bookType(bookType)
