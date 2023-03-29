@@ -4,40 +4,74 @@
 #include <string>
 
 class Car {
+private:
+	const std::string _model;
 public:
-	std::string _brand;
-	std::string _model;
+	Car(const std::string& model): _model(model){}
 
-	Car(const std::string& brand, const std::string& model) :
-		_brand(brand), _model(model) {}
+	virtual ~Car() {}
+
+	const std::string& getModel()
+	{
+		return _model;
+	}
+};
+
+class Mercedes : public Car {
+public:
+	Mercedes(const std::string& model) : Car(model) {}
+	virtual ~Mercedes() {
+		std::cout << "Mercedes " << getModel() << std::endl;
+	}
+};
+
+class Honda:public Car {
+public:
+	Honda(const std::string& model) : Car(model) {}
+	virtual ~Honda() {
+		std::cout << "Honda" << getModel() << std::endl;
+	};
+};
+
+class BMW:public Car {
+public:
+	BMW(const std::string& model) : Car(model) {}
+	virtual ~BMW() {
+		std::cout << "BMW" << getModel() << std::endl;
+	};
 };
 
 int main() {
-
-	setlocale(LC_ALL, "ru");
 
 	std::string path = "cars.txt";
 	std::ifstream file;
 	file.open(path);
 	if (!file.is_open()) {
-		std::cout << "error" << std::endl;
+		std::cout << "Error" << std::endl;
 	}
 	else
 	{
-		std::cout << "open!" << std::endl;
+		std::cout << "Open!" << std::endl;
 	}
 	std::vector <Car> cars;
-
 	std::string _brand;
 	std::string _model;
 
 	while (file >> _brand >> _model) {
-		cars.push_back(Car(_brand, _model));
+
+		if (_brand == "Mercedes")
+		{
+			cars.push_back(Mercedes(_model));
+		}
+		else if (_brand == "BMW")
+		{
+			cars.push_back(BMW(_model));
+		}
+		else if (_brand == "Honda") {
+			cars.push_back(Honda(_model));
+		}
 	}
 
-	for (int i = 0; i < cars.size(); i++) {
-		std::cout << "Марка: " << cars[i]._brand << ", Модель: " << cars[i]._model << std::endl;
-	}
 	file.close();
 	return 0;
 }
