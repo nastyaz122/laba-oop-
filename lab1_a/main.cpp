@@ -1,20 +1,16 @@
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
 #include <iostream>
 #include <vector>
 #include <string>
-
-struct Leaks {
-	~Leaks() { _CrtDumpMemoryLeaks(); }
-}_l;
-
 
 enum class Type {
 	Art, Tech
 };
 
+void Print();
+
 class Book
 {
+	friend void Print();
 public:
 	Book(const std::string& avtor, const std::string& title, Type bookType) :
 		_avtor(avtor), _title(title), _bookType(bookType)
@@ -38,11 +34,12 @@ public:
 	{
 		if (avtor.empty() || title.empty()) {
 
-			std::cout << "dannye ne correctny" << std::endl;
+			std::cout << "The data is not correct" << std::endl;
 			return false;
 		}
 		else {
 			b.emplace_back(title, avtor, bookType);
+			return true;
 		}
 	}
 	void PrintSwitch() {
