@@ -1,13 +1,19 @@
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
 
+struct Leaks {
+	~Leaks() { _CrtDumpMemoryLeaks(); }
+}_l;
+
 class Car {
 private:
 	const std::string _model;
 public:
-	Car(const std::string& model): _model(model){}
+	Car(const std::string& model) : _model(model) {}
 
 	virtual ~Car() {}
 
@@ -21,23 +27,23 @@ class Mercedes : public Car {
 public:
 	Mercedes(const std::string& model) : Car(model) {}
 	virtual ~Mercedes() {
-		std::cout << "Mercedes " << getModel() << std::endl;
+		std::cout << "Mercedes " << getModel() << " " << std::endl;
 	}
 };
 
-class Honda:public Car {
+class Honda :public Car {
 public:
 	Honda(const std::string& model) : Car(model) {}
 	virtual ~Honda() {
-		std::cout << "Honda" << getModel() << std::endl;
+		std::cout << "Honda" << getModel() << " " << std::endl;
 	};
 };
 
-class BMW:public Car {
+class BMW :public Car {
 public:
 	BMW(const std::string& model) : Car(model) {}
 	virtual ~BMW() {
-		std::cout << "BMW" << getModel() << std::endl;
+		std::cout << "BMW" << getModel() << " " << std::endl;
 	};
 };
 
@@ -53,7 +59,7 @@ int main() {
 	{
 		std::cout << "Open!" << std::endl;
 	}
-	std::vector <Car> cars;
+	std::vector <Car*> cars;
 	std::string _brand;
 	std::string _model;
 
@@ -61,17 +67,23 @@ int main() {
 
 		if (_brand == "Mercedes")
 		{
-			cars.push_back(Mercedes(_model));
+			cars.push_back(new Mercedes(_model));
 		}
 		else if (_brand == "BMW")
 		{
-			cars.push_back(BMW(_model));
+			cars.push_back(new BMW(_model));
 		}
 		else if (_brand == "Honda") {
-			cars.push_back(Honda(_model));
+			cars.push_back(new Honda(_model));
 		}
 	}
 
 	file.close();
-	return 0; //как было бы хорошо, если бы кто-то глянул мои лабораторные...
+
+	for (auto Car : cars)
+	{
+		delete Car;
+	}
+
+	return 0;
 }
