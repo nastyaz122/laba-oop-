@@ -27,7 +27,7 @@ class Mercedes : public Car {
 public:
 	Mercedes(const std::string& model) : Car(model) {}
 	virtual ~Mercedes() {
-		std::cout << "Mercedes " << getModel() << " " << std::endl;
+		std::cout << "Mercedes " << " " << getModel() << std::endl;
 	}
 };
 
@@ -35,7 +35,7 @@ class Honda :public Car {
 public:
 	Honda(const std::string& model) : Car(model) {}
 	virtual ~Honda() {
-		std::cout << "Honda" << getModel() << " " << std::endl;
+		std::cout << "Honda" << " " << getModel() << std::endl;
 	};
 };
 
@@ -43,7 +43,7 @@ class BMW :public Car {
 public:
 	BMW(const std::string& model) : Car(model) {}
 	virtual ~BMW() {
-		std::cout << "BMW" << getModel() << " " << std::endl;
+		std::cout << "BMW" << " " << getModel() << std::endl;
 	};
 };
 
