@@ -6,11 +6,8 @@ enum class Type {
 	Art, Tech
 };
 
-void Print();
-
 class Book
 {
-	friend void Print();
 public:
 	Book(const std::string& avtor, const std::string& title, Type bookType) :
 		_avtor(avtor), _title(title), _bookType(bookType)
@@ -38,46 +35,46 @@ public:
 			return false;
 		}
 		else {
-			b.emplace_back(title, avtor, bookType);
+			book.emplace_back(title, avtor, bookType);
 			return true;
 		}
 	}
 	void PrintSwitch() {
-		int art = 0;
-		int tech = 0;
-		for (Book i : b) {
+		int ArtCount = 0;
+		int TechCount = 0;
+		for (Book i : book) {
 			switch (i.GetType())
 			{
 			case Type::Art:
-				++art;
+				++ArtCount;
 				break;
 			default:
-				++tech;
+				++TechCount;
 				break;
 			}
 		}
-		std::cout << "Art: " << art << std::endl;
-		std::cout << "Tech: " << tech << std::endl;
+		std::cout << "Art: " << ArtCount << std::endl;
+		std::cout << "Tech: " << TechCount << std::endl;
 	}
 	void PrintForeach() {
-		int art = 0;
-		int tech = 0;
-		for (Book i : b)
+		int ArtCount = 0;
+		int TechCount = 0;
+		for (Book i : book)
 		{
 			if (i.GetType() == Type::Art)
 			{
-				++art;
+				++ArtCount;
 			}
-			else
+			else if (i.GetType() == Type::Tech)
 			{
-				++tech;
+				++TechCount;
 			}
 		}
-		std::cout << "Art: " << art << std::endl;
-		std::cout << "Tech: " << tech << std::endl;
+		std::cout << "Art: " << ArtCount << std::endl;
+		std::cout << "Tech: " << TechCount << std::endl;
 	}
 private:
-	std::vector <Book> b;
+	std::vector <Book> book;
 };
 
 
@@ -97,3 +94,4 @@ int main()
 
 	return 0;
 }
+
