@@ -42,7 +42,7 @@ public:
 	void PrintSwitch() {
 		int ArtCount = 0;
 		int TechCount = 0;
-		for (Book i : book) {
+		for (const Book &i : book) {
 			switch (i.GetType())
 			{
 			case Type::Art:
@@ -59,7 +59,7 @@ public:
 	void PrintForeach() {
 		int ArtCount = 0;
 		int TechCount = 0;
-		for (Book i : book)
+		for (const Book &i : book)
 		{
 			if (i.GetType() == Type::Art)
 			{
