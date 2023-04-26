@@ -1,20 +1,16 @@
-#define _CRTDBG_MAP_ALLOC
-#include <crtdbg.h>
-#include "framework.h"
-#include <windows.h>  
-#include <vector> 
-#include "lab2.2.h"
+#define _CRTDBG_MAP_ALLOC 
+#include <crtdbg.h> 
+#include "framework.h" 
+#include <windows.h>   
+#include <vector>  
 struct Leaks {
     ~Leaks() { _CrtDumpMemoryLeaks(); }
 }_l;
  
-
-// Объекты окна  
 HWND g_hWnd;
 HDC g_hdc;
 PAINTSTRUCT g_ps;
-
-// Классы фигур  
+  
 class Shape {
 public:
     virtual void Draw(HDC hdc) = 0;
@@ -29,6 +25,7 @@ public:
     virtual void Draw(HDC hdc) {
         Ellipse(hdc, m_x - m_r, m_y - m_r, m_x + m_r, m_y + m_r);
     }
+    virtual ~Circle() {}
 };
 
 class Rect : public Shape {
@@ -39,28 +36,25 @@ public:
     virtual void Draw(HDC hdc) {
         Rectangle(hdc, m_x, m_y, m_x + m_w, m_y + m_h);
     }
+    virtual ~Rect() {}
 };
-
-// Контейнер для фигур  
+ 
 std::vector<Shape*> g_shapes;
-
-// Обработчик сообщений  
+ 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
     case WM_CREATE: {
-        // Создание фигур  
+  
         Circle* circle = new Circle(50, 50, 30);
         Rect* rect = new Rect(100, 100, 50, 30);
-
-        // Добавление в контейнер  
+ 
         g_shapes.push_back(circle);
         g_shapes.push_back(rect);
         break;
     }
     case WM_PAINT: {
         g_hdc = BeginPaint(hWnd, &g_ps);
-
-        // Рисование фигур из контейнера  
+ 
         for (int i = 0; i < g_shapes.size(); i++) {
             g_shapes[i]->Draw(g_hdc);
         }
@@ -72,6 +66,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
         for (int i = 0; i < g_shapes.size(); i++) {
             delete g_shapes[i];
         }
+        g_shapes.clear(); 
         break;
     }
     default:
@@ -80,8 +75,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) 
     return 0;
 }
 
-int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-    // Регистрация класса окна  
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+
     WNDCLASS wc = { 0 };
     wc.lpfnWndProc = WndProc;
     wc.hInstance = hInstance;
@@ -103,5 +98,5 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
         DispatchMessage(&msg);
     }
 
-    return (int)msg.wParam;
+    return static_cast<int>(msg.wParam);
 }
