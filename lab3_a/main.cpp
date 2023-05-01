@@ -1,18 +1,20 @@
 #include "framework.h" 
-#include "WindowsProject2.h" 
+#include "WindowsProject1.h" 
 #include <Windows.h> 
 
 class Vector2D {
-public:
+    friend void DrawEllipse(HDC, const Vector2D&, double);
+    friend Vector2D operator+(const Vector2D& left, const Vector2D& right);
+private:
     float x, y;
-
+public:
     Vector2D(float x = 0.0f, float y = 0.0f) : x(x), y(y) {}
-
-    friend Vector2D operator+(const Vector2D& left, const Vector2D& right) {
-        return Vector2D(left.x + right.x, left.y + right.y);
-    }
-   virtual ~Vector2D() {}
+    virtual ~Vector2D() {}
 };
+
+Vector2D operator+(const Vector2D& left, const Vector2D& right) {
+    return Vector2D(left.x + right.x, left.y + right.y);
+}
 
 void DrawEllipse(HDC hdc, const Vector2D& center, double radius) {
     Ellipse(hdc, static_cast<int>(center.x - radius), static_cast<int>(center.y - radius), static_cast<int>(center.x + radius), static_cast<int>(center.y + radius));
