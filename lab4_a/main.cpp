@@ -19,17 +19,11 @@ private:
 public:
     Employee(const std::string& n, const int& y, const std::string& p, const int& g) : _name(n), _yearOfBirth(y), _position(p), _groupNumber(g) {}
    
-    std::string getName() const { 
-        return _name;
-    }
     int getBirthYear() const {
         return _yearOfBirth;
     }
     std::string getPosition() const {
         return _position;
-    }
-    int getUnit() const { 
-        return _groupNumber;
     }
     void printInfo() const {
         std::cout << _name << ", " << _yearOfBirth << ", " << _position << ", " << "группа " << _groupNumber << std::endl;
