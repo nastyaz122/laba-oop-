@@ -32,7 +32,7 @@ void printReferences(const std::vector<Reference>& references, bool withNumbers)
 int main() {
     setlocale(LC_ALL, "RUS");
     std::vector <Reference> references;
-    std::ifstream file("bd.txt");
+    std::ifstream file("Bd.txt");
     if (!file.is_open()) {
         std::cout << "Ошибка открытия файла." << std::endl;
         return 1;
