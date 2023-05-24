@@ -21,12 +21,8 @@ public:
         std::cout << s << std::endl;
     }
 
-    A(const A& other) : s(other.s) {
-        std::cout << "Конструктор копирования класса A" << std::endl;
-    }
-
-    A(A&& other): s(std::move(other.s)) {
-        std::cout << "Конструктор перемещения класса A" << std::endl;
+    virtual A* clone() const {
+        return new A(*this);
     }
 
     virtual ~A() {
@@ -46,12 +42,8 @@ public:
         std::cout << a << std::endl;
     }
 
-    B(const B& other) : A(other) {
-        std::cout << "Конструктор копирования класса B" << std::endl;
-    }
-
-    B(B&& other): A(std::move(other)) {
-        std::cout << "Конструктор перемещения класса B" << std::endl;
+    virtual B* clone() const {
+        return new B(*this);
     }
 
     ~B() {
@@ -60,10 +52,12 @@ public:
     }
 };
 
-void del(std::vector<A*>& v) {
-    for (int i = 0; i < v.size(); i++)
-        delete v[i];
-    v.clear(); // Очистить вектор
+
+template<class T>
+void del(T& v) {
+    for (auto it = v.begin(); it != v.end(); ++it)
+        delete* it;
+    v.clear();
 }
 
 int main() {
@@ -74,15 +68,10 @@ int main() {
 
     std::vector<A*> v;
     for (auto it = l.begin(); it != l.end(); ++it) {
-        v.push_back(new A(**it)); // Копирование элементов из списка в вектор
+        v.push_back((*it)->clone());
     }
 
-    del(v); // Удаление элементов вектора
-
-    for (auto it = l.begin(); it != l.end(); ++it) {
-        delete* it; // Удаление элементов списка
-    }
-    l.clear(); // Очистить список
-
+    del(v); 
+    del(l);
     return 0;
 }
